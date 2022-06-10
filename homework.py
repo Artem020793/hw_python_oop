@@ -1,3 +1,6 @@
+from typing import List, Union
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -126,7 +129,7 @@ class Swimming(Training):
         return (self.action * self.LEN_STEP) / self.M_IN_KM
 
 
-def read_package(workout_type: str, data: list[str]) -> Training:
+def read_package(workout_type: str, data: List[Union[int, float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
 
     training_dict = {'RUN': Running,
