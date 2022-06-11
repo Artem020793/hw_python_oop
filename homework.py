@@ -1,6 +1,8 @@
-from typing import List, Union
+from typing import Dict, List, Type, Union
+from dataclasses import dataclass
 
 
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -44,7 +46,7 @@ class Training:
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
 
-        return ((self.action * self.LEN_STEP) / self.M_IN_KM)
+        return (self.action * self.LEN_STEP) / self.M_IN_KM
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
@@ -132,10 +134,12 @@ class Swimming(Training):
 def read_package(workout_type: str, data: List[Union[int, float]]) -> Training:
     """Прочитать данные полученные от датчиков."""
 
-    training_dict = {'RUN': Running,
-                     'WLK': SportsWalking,
-                     'SWM': Swimming}
-    return training_dict[workout_type](*data)
+    training_package: Dict[str, Type[Training]] = {'RUN': Running,
+                                                   'WLK': SportsWalking,
+                                                   'SWM': Swimming}
+    if workout_type in training_package:
+        return training_package[workout_type](*data)
+    raise ValueError("Такого нет")
 
 
 def main(training: Training) -> None:
